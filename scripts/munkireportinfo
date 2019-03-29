@@ -1,0 +1,54 @@
+#!/usr/bin/python
+
+import subprocess
+import os
+import plistlib
+import sys
+sys.path.insert(0, '/usr/local/munki')
+
+from munkilib import FoundationPlist
+from Foundation import CFPreferencesCopyAppValue
+
+def get_pref_value(key, domain):
+    
+    value = CFPreferencesCopyAppValue(key, domain)
+    
+    if(value is not None):
+        return value
+    elif(value is not None and len(value) == 0 ):
+        return ""
+    else:
+        return ""
+    
+def main():
+    """Main"""
+
+    # Create cache dir if it does not exist
+    cachedir = '%s/cache' % os.path.dirname(os.path.realpath(__file__))
+    if not os.path.exists(cachedir):
+        os.makedirs(cachedir)
+
+    # Skip manual check
+    if len(sys.argv) > 1:
+        if sys.argv[1] == 'manualcheck':
+            print 'Manual check: skipping'
+            exit(0)
+
+    # Set the encoding
+    reload(sys)
+    sys.setdefaultencoding('utf8')
+
+    # Get results
+    result = {}
+    result['baseurl'] = get_pref_value('BaseUrl', 'MunkiReport')
+    result['passphrase'] = get_pref_value('Passphrase', 'MunkiReport')
+    result['reportitems'] = get_pref_value('ReportItems', 'MunkiReport')
+    result['version'] = str(get_pref_value('Version', 'MunkiReport'))
+
+    # Write munkireportinfo cache file
+    output_plist = os.path.join(cachedir, 'munkireportinfo.plist')
+    FoundationPlist.writePlist(result, output_plist)
+    print FoundationPlist.writePlistToString(result)
+
+if __name__ == "__main__":
+    main()
