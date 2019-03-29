@@ -8,13 +8,6 @@
  **/
 class Munkireportinfo_controller extends Module_controller
 {
-        /*** Protect methods with auth! ****/
-        public function __construct()
-        {
-                // Store module path
-                $this->module_path = dirname(__FILE__);
-        }
-
         /**
          * Default method
          *
@@ -22,9 +15,16 @@ class Munkireportinfo_controller extends Module_controller
          **/
         public function index()
         {
-                echo "You've loaded the munkireportinfo module!";
+            echo "You've loaded the munkireportinfo module!";
         }
-        
+
+        /*** Protect methods with auth! ****/
+        public function __construct()
+        {
+            // Store module path
+            $this->module_path = dirname(__FILE__);
+        }
+
         /**
          * Retrieve data in json format
          *
@@ -35,13 +35,10 @@ class Munkireportinfo_controller extends Module_controller
 
             if (! $this->authorized()) {
                 $obj->view('json', array('msg' => 'Not authorized'));
+                return;
             }
-
-            //$munkireportinfo = new Munkireportinfo_model;
-            //$obj->view('json', array('msg' => $munkireportinfo->retrieve_records($serial_number)));
             
-                    $munkireportinfo = new Munkireportinfo_model($serial_number);
-        $obj->view('json', array('msg' => $munkireportinfo->rs));
-            
+            $munkireportinfo = new Munkireportinfo_model($serial_number);
+            $obj->view('json', array('msg' => $munkireportinfo->rs));
         }
 } // END class Munkireportinfo_model

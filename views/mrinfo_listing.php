@@ -9,11 +9,8 @@ new Munkireportinfo_model;
 <div class="container">
   <div class="row">
 	<div class="col-lg-12">
-
 	  <h3><span data-i18n="munkireportinfo.reporttitle"></span> <span id="total-count" class='label label-primary'>…</span></h3>
-
 	  <table class="table table-striped table-condensed table-bordered">
-
 		<thead>
 		  <tr>
 			<th data-i18n="listing.computername" data-colname='machine.computer_name'></th>
@@ -24,13 +21,11 @@ new Munkireportinfo_model;
 			<th data-i18n="munkireportinfo.reportitems" data-colname='munkireportinfo.reportitems'></th>
 		  </tr>
 		</thead>
-
 		<tbody>
 		  <tr>
 			<td data-i18n="listing.loading" colspan="6" class="dataTables_empty"></td>
 		  </tr>
 		</tbody>
-
 	  </table>
 	</div> <!-- /span 12 -->
   </div> <!-- /row -->
@@ -114,7 +109,6 @@ new Munkireportinfo_model;
                 }
 		    }
 	    });
-
 	});
 </script>
 
