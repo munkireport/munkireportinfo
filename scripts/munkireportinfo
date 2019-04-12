@@ -48,7 +48,7 @@ def main():
     # Write munkireportinfo cache file
     output_plist = os.path.join(cachedir, 'munkireportinfo.plist')
     FoundationPlist.writePlist(result, output_plist)
-    print FoundationPlist.writePlistToString(result)
+    #print FoundationPlist.writePlistToString(result)
 
 if __name__ == "__main__":
     main()
