@@ -26,7 +26,7 @@ $(document).on('appUpdate', function(){
 					.append($('<span>')
 						.addClass('badge pull-right')
 						.text(obj.count))
-					.append(obj.log_warning.replace(/\\n/g, "<br>").replace(/\\/g, ""))
+					.append(obj.log_warning.replace(/\n/g, "<br>").replace(/\\/g, ""))
 				)
 		});
 
