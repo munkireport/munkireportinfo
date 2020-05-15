@@ -40,7 +40,7 @@ $(document).on('appReady', function(){
 
                         // Format log
                         } else if(prop == "log" || prop == "log_warning" || prop == "log_error"){
-                            rows = rows + '<tr><th>'+i18n.t('munkireportinfo.'+prop)+'</th><td>'+d[prop].replace(/\n/g, "<br>")+'</td></tr>';
+                            rows = rows + '<tr><th>'+i18n.t('munkireportinfo.'+prop)+'</th><td>'+d[prop].replace(/\n/g, "<br>").replace(/\\/g, "")+'</td></tr>';
 
                         // Else, build out rows from entries
                         } else {
