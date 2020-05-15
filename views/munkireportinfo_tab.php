@@ -39,7 +39,7 @@ $(document).on('appReady', function(){
                             rows = rows + '<tr><th style="min-width:180px;">'+i18n.t('munkireportinfo.'+prop)+'</th><td>'+mr.integerToVersion(d[prop])+'</td></tr>';
 
                         // Format log
-                        } else if(prop == "log"){
+                        } else if(prop == "log" || prop == "log_warning" || prop == "log_error"){
                             rows = rows + '<tr><th>'+i18n.t('munkireportinfo.'+prop)+'</th><td>'+d[prop].replace(/\n/g, "<br>")+'</td></tr>';
 
                         // Else, build out rows from entries
