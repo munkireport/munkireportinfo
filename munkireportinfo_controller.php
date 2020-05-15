@@ -165,14 +165,14 @@ class Munkireportinfo_controller extends Module_controller
     public function get_data($serial_number)
     {
         $munkireportinfo = new Munkireportinfo_model();
-        $sql = "SELECT version, baseurl, passphrase, start_time, end_time, upload_size, error_count, warning_count, reportitems, log
+        $sql = "SELECT version, baseurl, passphrase, start_time, end_time, upload_size, error_count, warning_count, log_warning, log_error, reportitems, log
                     FROM munkireportinfo
                     WHERE serial_number = '$serial_number'";
 
         jsonView($munkireportinfo->query($sql));
 
 //        jsonView(
-//            Munkireportinfo_model::selectRaw('version, baseurl, passphrase, start_time, end_time, upload_size, error_count, warning_count, reportitems, log')
+//            Munkireportinfo_model::selectRaw('version, baseurl, passphrase, start_time, end_time, upload_size, error_count, warning_count, log_warning, log_error, reportitems, log')
 //                ->where('munkireportinfo.serial_number', $serial_number)
 //                ->filter()
 //                ->get()
