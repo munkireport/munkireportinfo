@@ -13,6 +13,14 @@ class Munkireportinfo_model extends \Model
             $this->rs['baseurl'] = '';
             $this->rs['passphrase'] = '';
             $this->rs['reportitems'] = '';
+            $this->rs['start_time'] = null;
+            $this->rs['end_time'] = null;
+            $this->rs['log'] = null;
+            $this->rs['log_warning'] = null;
+            $this->rs['log_error'] = null;
+            $this->rs['error_count'] = 0;
+            $this->rs['warning_count'] = 0;
+            $this->rs['upload_size'] = null;
 
             if ($serial) {
                 $this->retrieve_record($serial);
@@ -56,19 +64,20 @@ class Munkireportinfo_model extends \Model
             $plist['version'] = null;
         }
 
-        foreach (array('baseurl', 'passphrase', 'version', 'reportitems') as $item) {
+        foreach (array('baseurl', 'passphrase', 'version', 'reportitems', 'start_time', 'end_time', 'log', 'log_warning', 'log_error', 'error_count', 'warning_count', 'upload_size') as $item) {
             if (isset($plist[$item])) {
                 if ($item == 'reportitems'){
 
                     $modulelist = array_keys($plist["reportitems"]);
                     sort($modulelist);
                     $modulelistproper = implode(", ",$modulelist);
-                    $this->$item = $modulelistproper;                  
+                    $this->$item = $modulelistproper;
+
                 } else {    
                     $this->$item = $plist[$item];
                 }
             } else {
-                $this->$item = '';
+                $this->$item = null;
             }
         }
 

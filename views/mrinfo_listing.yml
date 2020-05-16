@@ -1,0 +1,19 @@
+i18n_title: munkireportinfo.reporttitle
+not_null_column: version
+js_link: module/munkireportinfo/js/munkireportinfo
+table:
+  - column: machine.computer_name
+    i18n_header: listing.computername
+    formatter: clientDetail
+    tab_link: munkireportinfo-tab
+  - column: reportdata.serial_number
+    i18n_header: serial
+  - {i18n_header: munkireportinfo.version, column: munkireportinfo.version, formatter: munkireportinfoVersion}
+  - {i18n_header: munkireportinfo.baseurl, column: munkireportinfo.baseurl}
+  - {i18n_header: munkireportinfo.passphrase, column: munkireportinfo.passphrase}
+  - {i18n_header: munkireportinfo.error_count, column: munkireportinfo.error_count}
+  - {i18n_header: munkireportinfo.warning_count, column: munkireportinfo.warning_count}
+  - {i18n_header: munkireportinfo.upload_size, column: munkireportinfo.upload_size}
+  - {i18n_header: munkireportinfo.start_time, column: munkireportinfo.start_time, formatter: timestampToMoment}
+  - {i18n_header: munkireportinfo.end_time, column: munkireportinfo.end_time, formatter: timestampToMoment}
+  - {i18n_header: munkireportinfo.reportitems, column: munkireportinfo.reportitems}

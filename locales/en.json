@@ -4,5 +4,22 @@
     "passphrase": "Passphrase",
     "reportitems": "Installed Modules",
     "reporttitle": "MunkiReport Report",
-    "version": "Version"
+    "munkireport_versions": "MunkiReport Versions",
+    "status": "MunkiReport Status",
+    "version": "Version",
+    "http": "HTTP",
+    "https": "HTTPS",
+    "local": "Local",
+    "protocol": "MunkiReport Protocol",
+    "start_time": "MunkiReport Start Time",
+    "end_time": "MunkiReport End Time",
+    "duration": "Duration",
+    "munkireport_errors": "MunkiReport Errors",
+    "munkireport_warnings": "MunkiReport Warnings",
+    "error_count": "Errors",
+    "warning_count": "Warnings",
+    "log": "MunkiReport Log",
+    "log_warning": "MunkiReport Warnings",
+    "log_error": "MunkiReport Errors",
+    "upload_size": "Upload Size"
 }

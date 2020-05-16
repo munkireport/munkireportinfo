@@ -4,6 +4,9 @@ import subprocess
 import os
 import plistlib
 import sys
+from datetime import datetime, timedelta, tzinfo
+import time
+
 sys.path.insert(0, '/usr/local/munki')
 sys.path.insert(0, '/usr/local/munkireport')
 
@@ -21,19 +24,95 @@ def get_pref_value(key, domain):
     else:
         return ""
     
+def get_log(result):
+
+    # Check if the log exists
+    if os.path.isfile('/Library/MunkiReport/Logs/MunkiReport.log'):
+
+        mr_log = []
+        mr_log_error = []
+        mr_log_warning = []
+        error_count = 0
+        warning_count = 0
+        current_run = 1
+
+        # Process log from bottom up to get last full run
+        for line in reversed(open("/Library/MunkiReport/Logs/MunkiReport.log").readlines()):
+            if "## Starting MunkiReport run" in line and current_run is 1:
+                # Check if we've passed through the current run logs and change flag
+                current_run = 0
+            elif "## Starting MunkiReport run" in line and current_run is 0:
+                mr_log.append(line.strip())
+                time_line = line.replace("## Starting MunkiReport run", "").strip()
+                try:
+                    result["start_time"] = munki_log_to_timestamp(time_line)
+                except:
+                    result["start_time"] = int(time.time())
+                break
+            elif "## Finished run" in line and current_run is 0:
+                mr_log.append(line.strip())
+                time_line = line.replace("## Finished run", "").strip()
+                try:
+                    result["end_time"] = munki_log_to_timestamp(time_line)
+                except:
+                    result["end_time"] = int(time.time())
+            elif "Sending items (" in line and current_run is 0:
+                mr_log.append(line.strip())
+                upload_size = line.split("Sending items (")[-1].replace(")", "").strip()
+                result["upload_size"] = upload_size
+            elif current_run is 0:
+
+                # Log the errors and warnings
+                if " ERROR: " in line:
+                    mr_log_error.append(line.split(" ERROR: ")[-1].strip())
+                    error_count = error_count + 1
+                if " WARNING: " in line:
+                    mr_log_warning.append(line.split(" WARNING: ")[-1].strip())
+                    warning_count = warning_count + 1
+
+                mr_log.append(line.strip())
+
+        # Reverse saved logs back to start->finish
+        mr_log.reverse()
+        result["warning_count"] = warning_count
+        result["error_count"] = error_count
+        result["log"] = "\n".join(mr_log)
+        result["log_error"] = "\n".join(mr_log_error)
+        result["log_warning"] = "\n".join(mr_log_warning)
+
+        return result
+    else:
+        return result
+    
+def munki_log_to_timestamp(time_string):
+    time_string = time_string.strip()
+    date_str, tz = time_string[:-5], time_string[-5:]
+    dt_utc = datetime.strptime(date_str.strip(), "%b %d %Y %H:%M:%S")
+    dt = dt_utc.replace(tzinfo=FixedOffset(tz))
+    utc_naive = dt.replace(tzinfo=None) - dt.utcoffset()
+    return int((utc_naive - datetime(1970, 1, 1)).total_seconds())
+
+class FixedOffset(tzinfo):
+    """offset_str: Fixed offset in str: e.g. '-0400'"""
+    def __init__(self, offset_str):
+        sign, hours, minutes = offset_str[0], offset_str[1:3], offset_str[3:]
+        offset = (int(hours) * 60 + int(minutes)) * (-1 if sign == "-" else 1)
+        self.__offset = timedelta(minutes=offset)
+        # NOTE: the last part is to remind about deprecated POSIX GMT+h timezones
+        # that have the opposite sign in the name;
+        # the corresponding numeric value is not used e.g., no minutes
+        '<%+03d%02d>%+d' % (int(hours), int(minutes), int(hours)*-1)
+    def utcoffset(self, dt=None):
+        return self.__offset
+    def tzname(self, dt=None):
+        return self.__name
+    def dst(self, dt=None):
+        return timedelta(0)
+    def __repr__(self):
+        return 'FixedOffset(%d)' % (self.utcoffset().total_seconds() / 60)
+
 def main():
     """Main"""
-
-    # Create cache dir if it does not exist
-    cachedir = '%s/cache' % os.path.dirname(os.path.realpath(__file__))
-    if not os.path.exists(cachedir):
-        os.makedirs(cachedir)
-
-    # Skip manual check
-    if len(sys.argv) > 1:
-        if sys.argv[1] == 'manualcheck':
-            print 'Manual check: skipping'
-            exit(0)
 
     # Set the encoding
     reload(sys)
@@ -45,11 +124,15 @@ def main():
     result['passphrase'] = get_pref_value('Passphrase', 'MunkiReport')
     result['reportitems'] = get_pref_value('ReportItems', 'MunkiReport')
     result['version'] = str(get_pref_value('Version', 'MunkiReport'))
+    
+    # Process the log
+    get_log(result)
 
     # Write munkireportinfo cache file
+    cachedir = '%s/cache' % os.path.dirname(os.path.realpath(__file__))
     output_plist = os.path.join(cachedir, 'munkireportinfo.plist')
     FoundationPlist.writePlist(result, output_plist)
-    #print FoundationPlist.writePlistToString(result)
+#    print FoundationPlist.writePlistToString(result)
 
 if __name__ == "__main__":
     main()

@@ -1,0 +1,23 @@
+client_tabs:
+    munkireportinfo-tab:
+        view: munkireportinfo_tab
+        i18n: munkireportinfo.clienttabtitle
+listings:
+    mrinfo:
+        view: mrinfo_listing
+        i18n: munkireportinfo.clienttabtitle
+reports:
+    munkireportinfo_report:
+        view: munkireportinfo_report
+        i18n: munkireportinfo.reporttitle
+widgets:
+    munkireportinfo_versions:
+        view: munkireportinfo_versions_widget
+    munkireportinfo:
+        view: munkireportinfo_widget
+    munkireportinfo_errors:
+        view: munkireportinfo_errors_widget
+    munkireportinfo_warnings:
+        view: munkireportinfo_warnings_widget
+    munkireportinfo_protocol:
+        view: munkireportinfo_protocol_widget
