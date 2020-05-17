@@ -6,13 +6,13 @@ listing_link: /show/listing/munkireportinfo/mrinfo
 icon: fa-plug
 buttons:
   - label: http
-    i18n_label: HTTP
+    i18n_label: munkireportinfo.http
     class: btn-danger
   - label: https
-    i18n_label: HTTPS
+    i18n_label: munkireportinfo.https
     class: btn-success
   - label: local
-    i18n_label: LOCAL
+    i18n_label: munkireportinfo.local
     class: btn-info
 
 # <div class="col-lg-4 col-md-6">
