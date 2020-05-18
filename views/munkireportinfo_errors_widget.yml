@@ -1,0 +1,8 @@
+type: scrollbox
+widget_id: munkireportinfo-errors-widget
+api_url: /module/munkireportinfo/get_errors/10
+i18n_title: munkireportinfo.munkireport_errors
+icon: fa-times-circle
+listing_link: /show/listing/munkireportinfo/mrinfo
+search_key: log_error
+i18nEmptyResult: no_errors
