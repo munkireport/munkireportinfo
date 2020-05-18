@@ -106,6 +106,7 @@ class Munkireportinfo_controller extends Module_controller
                ->filter()
                ->where('munkireportinfo.start_time', '>', $timestamp)
                ->first()
+               ->toLabelcount()
        );
     }
 

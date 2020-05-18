@@ -1,0 +1,65 @@
+type: button
+widget_id: munkireportinfo-widget
+api_url: /module/munkireportinfo/get_stats/168
+i18n_title: munkireportinfo.status
+listing_link: /show/listing/munkireportinfo/mrinfo
+icon: fa-clipboard
+buttons:
+  - label: error
+    i18n_label: error
+    class: btn-danger
+  - label: warning
+    i18n_label: warning
+    class: btn-warning
+
+
+
+# 		<div class="panel-body text-center">
+# 		  <a href="#munkireportinfo.error_count" tag="error" class="btn btn-danger disabled">
+# 			  <span class="bigger-150"> 0 </span><br>
+# 			  <span class="count"></span>
+# 		  </a>
+# 		  <a href="#munkireportinfo.warnings_count" tag="warning" class="btn btn-warning disabled">
+# 			  <span class="bigger-150"> 0 </span><br>
+# 			  <span class="count"></span>
+# 		  </a>
+# 		</div>
+# 	</div>
+# </div><!-- /col -->
+
+# <script>
+
+# $(document).on('appReady', function(){
+
+# 	var panelBody = $('#munkireportinfo-widget div.panel-body');
+
+# 	// Tags
+# 	var tags = ['error', 'warning'];
+
+# 	// Set url
+# 	$.each(tags, function(i, tag){
+# 		var hash = $('#munkireportinfo-widget a[tag="'+tag+'"]').attr('href')
+# 		$('#munkireportinfo-widget a[tag="'+tag+'"]')
+# 			.attr('href', appUrl + '/show/listing/munkireportinfo/mrinfo');
+# 	});
+
+# 	$(document).on('appUpdate', function(){
+
+# 		var hours = 24 * 7;
+# 		$.getJSON( appUrl + '/module/munkireportinfo/get_stats/'+hours, function( data ) {
+
+# 			$.each(tags, function(i, tag){
+# 				// Set count
+# 				$('#munkireportinfo-widget a[tag="'+tag+'"]')
+# 					.toggleClass('disabled', ! data[tag])
+# 					.find('span.bigger-150')
+# 						.text(+data[tag]);
+# 				// Set localized label
+# 				$('#munkireportinfo-widget a[tag="'+tag+'"] span.count')
+# 					.text(i18n.t(tag, { count: +data[tag] }));
+# 			});
+# 		});
+# 	});
+# });
+
+# </script>
