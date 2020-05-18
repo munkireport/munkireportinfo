@@ -46,7 +46,6 @@ class Munkireportinfo_controller extends Module_controller
         jsonView(
             Munkireportinfo_model::selectRaw("COUNT(CASE WHEN baseurl  LIKE 'http://%' THEN 1 END) AS http")
             ->selectRaw("COUNT(CASE WHEN baseurl LIKE 'https://%' THEN 1 END) AS https")
-            ->selectRaw("COUNT(CASE WHEN baseurl LIKE 'file://%' THEN 1 END) AS local")
             ->filter()
             ->first()
             ->toLabelCount()

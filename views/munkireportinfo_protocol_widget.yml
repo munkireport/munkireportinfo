@@ -8,12 +8,11 @@ buttons:
   - label: http
     i18n_label: munkireportinfo.http
     class: btn-danger
+    search_component: http://
   - label: https
     i18n_label: munkireportinfo.https
     class: btn-success
-  - label: local
-    i18n_label: munkireportinfo.local
-    class: btn-info
+    search_component: https://
 
 # <div class="col-lg-4 col-md-6">
 # 	<div class="panel panel-default" id="munkireportinfo-protocol-widget">
