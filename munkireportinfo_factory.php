@@ -22,6 +22,9 @@ $factory->define(Munkireportinfo_model::class, function (Faker\Generator $faker)
         'error_count' => $log_error !== null,
         'warning_count' => $log_warning !== null,
         'upload_size' => $faker->randomDigit . $faker->randomElement(['KB', 'GB', 'MB']),
+        'log_size' => $faker->numberBetween(200, 200000),
+        'warning_log_size' => $faker->numberBetween(10, 100000),
+        'error_log_size' => $faker->numberBetween(10, 100000),
     ];
 });
 

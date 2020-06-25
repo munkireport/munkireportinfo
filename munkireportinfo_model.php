@@ -20,5 +20,8 @@ class Munkireportinfo_model extends Eloquent
       'error_count',
       'warning_count',
       'upload_size',
+      'log_size',
+      'warning_log_size',
+      'error_log_size',
     ];
 }

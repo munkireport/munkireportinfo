@@ -80,6 +80,17 @@ def get_log(result):
         result["log_error"] = "\n".join(mr_log_error)
         result["log_warning"] = "\n".join(mr_log_warning)
 
+        # Get log file sizes
+        result["log_size"] = str(os.path.getsize("/Library/MunkiReport/Logs/MunkiReport.log"))
+
+        # Check if the warning log exists
+        if os.path.isfile('/Library/MunkiReport/Logs/warnings.log'):
+            result["warning_log_size"] = str(os.path.getsize("/Library/MunkiReport/Logs/warnings.log"))
+
+        # Check if the error log exists
+        if os.path.isfile('/Library/MunkiReport/Logs/errors.log'):
+            result["error_log_size"] = str(os.path.getsize("/Library/MunkiReport/Logs/errors.log"))
+
         return result
     else:
         return result

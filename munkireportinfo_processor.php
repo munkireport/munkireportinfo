@@ -35,7 +35,7 @@ class Munkireportinfo_processor extends Processor
 
         $infoData = [];
         
-        foreach (array('baseurl', 'passphrase', 'version', 'reportitems', 'start_time', 'end_time', 'log', 'log_warning', 'log_error', 'error_count', 'warning_count', 'upload_size') as $item) {
+        foreach (array('baseurl', 'passphrase', 'version', 'reportitems', 'start_time', 'end_time', 'log', 'log_warning', 'log_error', 'error_count', 'warning_count', 'upload_size', 'log_size', 'warning_log_size', 'error_log_size') as $item) {
             if (isset($plist[$item])) {
                 if ($item == 'reportitems'){
 
