@@ -21,5 +21,8 @@
     "log": "MunkiReport Log",
     "log_warning": "MunkiReport Warnings",
     "log_error": "MunkiReport Errors",
-    "upload_size": "Upload Size"
+    "upload_size": "Upload Size",
+    "log_size": "Log Size",
+    "warning_log_size": "Warning Log Size",
+    "error_log_size": "Error Log Size"
 }

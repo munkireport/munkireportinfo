@@ -14,6 +14,7 @@ table:
   - {i18n_header: munkireportinfo.log_warning, column: munkireportinfo.log_warning}
   - {i18n_header: munkireportinfo.log_error, column: munkireportinfo.log_error}
   - {i18n_header: munkireportinfo.upload_size, column: munkireportinfo.upload_size}
+  - {i18n_header: munkireportinfo.log_size, column: munkireportinfo.log_size, formatter: fileSize}
   - {i18n_header: munkireportinfo.start_time, column: munkireportinfo.start_time, formatter: timestampToMoment}
   - {i18n_header: munkireportinfo.end_time, column: munkireportinfo.end_time, formatter: timestampToMoment}
   - {i18n_header: munkireportinfo.reportitems, column: munkireportinfo.reportitems}

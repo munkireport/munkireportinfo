@@ -1,7 +1,7 @@
 MunkiReport reporting module
 ==============
 
-Reports on the MunkiReport on the client
+Reports on the status of MunkiReport on the client
 
 Table Schema
 -----
@@ -17,3 +17,6 @@ Table Schema
 * error_count- int - Count of errors from previous MunkiReport run
 * warning_count- int - Count of warnings from previous MunkiReport run
 * upload_size - varchar(255) - Size of cache files uploaded from previous MunkiReport run
+* log_size - big int - Size of MunkiReport log file in bytes
+* warning_log_size - big int - Size of MunkiReport warning log in bytes
+* error_log_size - big int - Size of MunkiReport error log in bytes

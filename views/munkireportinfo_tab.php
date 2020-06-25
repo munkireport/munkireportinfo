@@ -41,6 +41,10 @@ $(document).on('appReady', function(){
                         // Format log
                         } else if(prop == "log" || prop == "log_warning" || prop == "log_error"){
                             rows = rows + '<tr><th>'+i18n.t('munkireportinfo.'+prop)+'</th><td>'+d[prop].replace(/\n/g, "<br>").replace(/\\/g, "")+'</td></tr>';
+                            
+                        // Format bytes
+                        } else if(prop == "log_size" || prop == "warning_log_size" || prop == "error_log_size"){
+                            rows = rows + '<tr><th>'+i18n.t('munkireportinfo.'+prop)+'</th><td>'+fileSize(d[prop], 2)+'</td></tr>';
 
                         // Else, build out rows from entries
                         } else {
