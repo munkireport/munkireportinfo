@@ -66,6 +66,9 @@ def get_log(result):
                 if " ERROR: " in line:
                     mr_log_error.append(line.split(" ERROR: ")[-1].strip())
                     error_count = error_count + 1
+                if "Server Error: " in line:
+                    mr_log_error.append(line.split("Server Error: ")[-1].strip())
+                    error_count = error_count + 1
                 if " WARNING: " in line:
                     mr_log_warning.append(line.split(" WARNING: ")[-1].strip())
                     warning_count = warning_count + 1
