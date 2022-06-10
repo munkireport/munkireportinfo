@@ -116,7 +116,7 @@ class Munkireportinfo_controller extends Module_controller
     public function get_data($serial_number)
     {
        jsonView(
-           Munkireportinfo_model::selectRaw('version, baseurl, passphrase, start_time, end_time, upload_size, error_count, warning_count, log_warning, log_error, reportitems, log, log_size, warning_log_size, error_log_size')
+           Munkireportinfo_model::selectRaw('version, baseurl, passphrase, start_time, end_time, upload_size, error_count, warning_count, log_warning, log_error, reportitems, log_size, warning_log_size, error_log_size, log')
                ->where('munkireportinfo.serial_number', $serial_number)
                ->filter()
                ->get()
