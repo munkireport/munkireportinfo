@@ -5,3 +5,4 @@ i18n_title: munkireportinfo.munkireport_versions
 icon: fa-circle-o-notch
 listing_link: /show/listing/munkireportinfo/mrinfo
 search_key: version
+badge: count
