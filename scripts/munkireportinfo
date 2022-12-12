@@ -1,4 +1,4 @@
-#!/usr/local/munkireport/munkireport-python2
+#!/usr/local/munkireport/munkireport-python3
 
 import subprocess
 import os
@@ -13,17 +13,6 @@ sys.path.insert(0, '/usr/local/munkireport')
 from munkilib import FoundationPlist
 from Foundation import CFPreferencesCopyAppValue
 
-def get_pref_value(key, domain):
-    
-    value = CFPreferencesCopyAppValue(key, domain)
-    
-    if(value is not None):
-        return value
-    elif(value is not None and len(value) == 0 ):
-        return ""
-    else:
-        return ""
-    
 def get_log(result):
 
     # Check if the log exists
@@ -38,10 +27,10 @@ def get_log(result):
 
         # Process log from bottom up to get last full run
         for line in reversed(open("/Library/MunkiReport/Logs/MunkiReport.log").readlines()):
-            if "## Starting MunkiReport run" in line and current_run is 1:
+            if "## Starting MunkiReport run" in line and current_run == 1:
                 # Check if we've passed through the current run logs and change flag
                 current_run = 0
-            elif "## Starting MunkiReport run" in line and current_run is 0:
+            elif "## Starting MunkiReport run" in line and current_run == 0:
                 mr_log.append(line.strip())
                 time_line = line.replace("## Starting MunkiReport run", "").strip()
                 try:
@@ -49,18 +38,18 @@ def get_log(result):
                 except:
                     result["start_time"] = int(time.time())
                 break
-            elif "## Finished run" in line and current_run is 0:
+            elif "## Finished run" in line and current_run == 0:
                 mr_log.append(line.strip())
                 time_line = line.replace("## Finished run", "").strip()
                 try:
                     result["end_time"] = munki_log_to_timestamp(time_line)
                 except:
                     result["end_time"] = int(time.time())
-            elif "Sending items (" in line and current_run is 0:
+            elif "Sending items (" in line and current_run == 0:
                 mr_log.append(line.strip())
                 upload_size = line.split("Sending items (")[-1].replace(")", "").strip()
                 result["upload_size"] = upload_size
-            elif current_run is 0:
+            elif current_run == 0:
 
                 # Log the errors and warnings
                 if " ERROR: " in line:
@@ -115,6 +104,17 @@ def munki_log_to_timestamp(time_string):
     utc_naive = dt.replace(tzinfo=None) - dt.utcoffset()
     return int((utc_naive - datetime(1970, 1, 1)).total_seconds())
 
+def get_pref_value(key, domain):
+    
+    value = CFPreferencesCopyAppValue(key, domain)
+    
+    if(value is not None):
+        return value
+    elif(value is not None and len(value) == 0 ):
+        return ""
+    else:
+        return ""
+
 class FixedOffset(tzinfo):
     """offset_str: Fixed offset in str: e.g. '-0400'"""
     def __init__(self, offset_str):
@@ -136,10 +136,6 @@ class FixedOffset(tzinfo):
 
 def main():
     """Main"""
-
-    # Set the encoding
-    reload(sys)
-    sys.setdefaultencoding('utf8')
 
     # Get results
     result = {}
