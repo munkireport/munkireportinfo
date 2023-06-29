@@ -8,9 +8,12 @@ table:
     tab_link: munkireportinfo-tab
   - column: reportdata.serial_number
     i18n_header: serial
+  - {i18n_header: munkireportinfo.packageversion, column: munkireportinfo.packageversion}
   - {i18n_header: munkireportinfo.version, column: munkireportinfo.version, formatter: munkireportinfoVersion}
   - {i18n_header: munkireportinfo.baseurl, column: munkireportinfo.baseurl}
   - {i18n_header: munkireportinfo.passphrase, column: munkireportinfo.passphrase}
+  - {i18n_header: munkireportinfo.installdate, column: munkireportinfo.installdate, formatter: timestampToMoment}
+  - {i18n_header: munkireportinfo.packagefilename, column: munkireportinfo.packagefilename}
   - {i18n_header: munkireportinfo.log_warning, column: munkireportinfo.log_warning}
   - {i18n_header: munkireportinfo.log_error, column: munkireportinfo.log_error}
   - {i18n_header: munkireportinfo.upload_size, column: munkireportinfo.upload_size}

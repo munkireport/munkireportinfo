@@ -25,7 +25,10 @@ $factory->define(Munkireportinfo_model::class, function (Faker\Generator $faker)
         'log_size' => $faker->numberBetween(200, 200000),
         'warning_log_size' => $faker->numberBetween(10, 100000),
         'error_log_size' => $faker->numberBetween(10, 100000),
-    ];
+        'packageversion' => $faker->word,
+        'installdate' => $starttime->format('U'),
+        'packagefilename' => $faker->word,
+   ];
 });
 
 

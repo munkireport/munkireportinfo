@@ -20,6 +20,7 @@ class Munkireportinfo_processor extends Processor
         // Convert version to int
         if (isset($plist['version'])) {
             $digits = explode('.', $plist['version']);
+            $digits_commit = array_pop($digits); // Pop off the commit
             $mult = 10000;
             $plist['version'] = 0;
             foreach ($digits as $digit) {
@@ -35,7 +36,7 @@ class Munkireportinfo_processor extends Processor
 
         $infoData = [];
         
-        foreach (array('baseurl', 'passphrase', 'version', 'reportitems', 'start_time', 'end_time', 'log', 'log_warning', 'log_error', 'error_count', 'warning_count', 'upload_size', 'log_size', 'warning_log_size', 'error_log_size') as $item) {
+        foreach (array('baseurl', 'passphrase', 'version', 'reportitems', 'start_time', 'end_time', 'log', 'log_warning', 'log_error', 'error_count', 'warning_count', 'upload_size', 'log_size', 'warning_log_size', 'error_log_size', 'packageversion', 'installdate', 'packagefilename') as $item) {
             if (isset($plist[$item])) {
                 if ($item == 'reportitems'){
 

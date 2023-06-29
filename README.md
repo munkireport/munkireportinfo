@@ -5,7 +5,7 @@ Reports on the status of MunkiReport on the client
 
 Table Schema
 -----
-* version - int - Version of MunkiReport installed
+* version - int - Version of MunkiReport installed, server version
 * baseurl - varchar(255) - URL of the MunkiReport instance
 * passphrase - varchar(255) - Passphrase used by client
 * reportitems - varchar(1024) - List of installed modules
@@ -20,3 +20,6 @@ Table Schema
 * log_size - big int - Size of MunkiReport log file in bytes
 * warning_log_size - big int - Size of MunkiReport warning log in bytes
 * error_log_size - big int - Size of MunkiReport error log in bytes
+* packageversion - varchar(255) - Version of MunkiReport PKG installed on client
+* installdate - big int - When MunkiReport was installed on client
+* packagefilename - varchar(255) - Name of PKG used to install MunkiReport on client

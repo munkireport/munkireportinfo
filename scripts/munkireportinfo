@@ -91,6 +91,30 @@ def get_log(result, munkireport_log):
 
     return result
 
+def get_receipt_info():
+    if os.path.isfile("/private/var/db/receipts/com.github.munkireport.plist"):
+
+        mr_receipt = FoundationPlist.readPlist("/private/var/db/receipts/com.github.munkireport.plist")
+
+        out = {'packageversion':'','installdate':'','packagefilename':''}
+
+        for receipt_entry in mr_receipt:
+            if receipt_entry == "PackageVersion":
+                out["packageversion"] = mr_receipt[receipt_entry]
+            elif receipt_entry == "InstallDate":
+                time_string = str(mr_receipt[receipt_entry]).strip()
+                date_str, tz = time_string[:-5], time_string[-5:]
+                dt_utc = datetime.strptime(date_str.strip(), "%Y-%m-%d %H:%M:%S")
+                dt = dt_utc.replace(tzinfo=FixedOffset(tz))
+                utc_naive = dt.replace(tzinfo=None) - dt.utcoffset()
+                out["installdate"] = int((utc_naive - datetime(1970, 1, 1)).total_seconds())
+            elif receipt_entry == "PackageFileName":
+                out["packagefilename"] = mr_receipt[receipt_entry]
+    else:
+        out = {}
+        
+    return out
+
     
 def munki_log_to_timestamp(time_string):
     time_string = time_string.strip()
@@ -139,6 +163,8 @@ def main():
     result['passphrase'] = get_pref_value('Passphrase', 'MunkiReport')
     result['reportitems'] = get_pref_value('ReportItems', 'MunkiReport')
     result['version'] = str(get_pref_value('Version', 'MunkiReport'))
+
+    result = result | get_receipt_info()
 
     # Check if the MunkiReport log exists
     if os.path.isfile('/Library/MunkiReport/Logs/MunkiReport.log'):
