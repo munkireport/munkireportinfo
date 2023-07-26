@@ -42,20 +42,54 @@ class Munkireportinfo_controller extends Module_controller
     }
 
     /**
-     * Get munki versions
+     * Get MunkiReport versions
      * Taken from munkireport controller
      *
      **/
     public function get_versions()
     {
+        $version_data = Munkireportinfo_model::selectRaw('version, count(*) AS count')
+         ->filter()
+         ->groupBy('version')
+         ->orderBy('count', 'desc')
+         ->get()
+         ->toArray();
+
+        $new_version_data = array();
+        foreach ($version_data as $item) {
+
+            $osvers = substr(("000000".$item['version']), -6);
+            $result = str_replace('.0', '.', implode('.', str_split($osvers, 2)));
+
+            // Remote leading zeros
+            if ($result[0] == "0"){
+                $result = ltrim($result, '0');
+            }
+
+            $item["version"] = $result;
+            array_push($new_version_data, $item);
+        }
+
        jsonView(
-           Munkireportinfo_model::selectRaw('version, count(*) AS count')
+        $new_version_data
+       );
+    }
+    
+    /**
+     * Get MunkiReport PKG versions
+     *
+     * @author tuxudo
+     **/
+    public function get_pkg_versions()
+    {
+        jsonView( 
+            Munkireportinfo_model::selectRaw('packageversion, count(*) AS count')
              ->filter()
-             ->groupBy('version')
+             ->groupBy('packageversion')
              ->orderBy('count', 'desc')
              ->get()
              ->toArray()
-       );
+        );
     }
     
     /**

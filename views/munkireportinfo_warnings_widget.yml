@@ -6,3 +6,4 @@ icon: fa-warning
 listing_link: /show/listing/munkireportinfo/mrinfo
 search_key: log_warning
 i18nEmptyResult: no_warnings
+badge: count

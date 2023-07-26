@@ -5,6 +5,7 @@
     "reportitems": "Installed Modules",
     "reporttitle": "MunkiReport Report",
     "munkireport_versions": "MunkiReport Versions",
+    "munkireport_pkg_versions": "MunkiReport PKG Versions",
     "status": "MunkiReport Status",
     "version": "Server Version",
     "http": "HTTP",
