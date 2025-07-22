@@ -28,6 +28,8 @@ $factory->define(Munkireportinfo_model::class, function (Faker\Generator $faker)
         'packageversion' => $faker->word,
         'installdate' => $starttime->format('U'),
         'packagefilename' => $faker->word,
+        'python_version' => $faker->numberBetween(200, 200000),
+        'python_path' => $faker->word,
    ];
 });
 

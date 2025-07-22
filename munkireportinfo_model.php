@@ -26,5 +26,7 @@ class Munkireportinfo_model extends Eloquent
       'packageversion',
       'installdate',
       'packagefilename',
+      'python_version',
+      'python_path',
     ];
 }

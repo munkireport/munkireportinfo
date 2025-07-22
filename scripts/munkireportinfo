@@ -7,7 +7,6 @@ import sys
 from datetime import datetime, timedelta, tzinfo
 import time
 
-sys.path.insert(0, '/usr/local/munki')
 sys.path.insert(0, '/usr/local/munkireport')
 
 from munkilib import FoundationPlist
@@ -163,6 +162,12 @@ def main():
     result['passphrase'] = get_pref_value('Passphrase', 'MunkiReport')
     result['reportitems'] = get_pref_value('ReportItems', 'MunkiReport')
     result['version'] = str(get_pref_value('Version', 'MunkiReport'))
+    result['python_version'] = str(sys.version)
+
+    if os.path.isfile("/usr/local/munkireport/munkireport-python3"):
+        result['python_path'] = str(os.readlink("/usr/local/munkireport/munkireport-python3"))
+    else:
+        result['python_path'] = "Unknown"
 
     result = result | get_receipt_info()
 

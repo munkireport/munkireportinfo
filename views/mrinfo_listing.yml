@@ -20,4 +20,5 @@ table:
   - {i18n_header: munkireportinfo.log_size, column: munkireportinfo.log_size, formatter: fileSize}
   - {i18n_header: munkireportinfo.start_time, column: munkireportinfo.start_time, formatter: timestampToMoment}
   - {i18n_header: munkireportinfo.end_time, column: munkireportinfo.end_time, formatter: timestampToMoment}
+  - {i18n_header: munkireportinfo.python_version, column: munkireportinfo.python_version}
   - {i18n_header: munkireportinfo.reportitems, column: munkireportinfo.reportitems}

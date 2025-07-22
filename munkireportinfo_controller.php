@@ -24,7 +24,7 @@ class Munkireportinfo_controller extends Module_controller
         // Store module path
         $this->module_path = dirname(__FILE__);
     }
-    
+
     /**
      * Get MunkiReport Protocol Statistics
      *
@@ -74,7 +74,7 @@ class Munkireportinfo_controller extends Module_controller
         $new_version_data
        );
     }
-    
+
     /**
      * Get MunkiReport PKG versions
      *
@@ -91,7 +91,7 @@ class Munkireportinfo_controller extends Module_controller
              ->toArray()
         );
     }
-    
+
     /**
      * Get statistics
      * Taken from munkireport controller  
@@ -150,7 +150,7 @@ class Munkireportinfo_controller extends Module_controller
     public function get_data($serial_number)
     {
        jsonView(
-           Munkireportinfo_model::selectRaw('version, packageversion, packagefilename, installdate, baseurl, passphrase, start_time, end_time, upload_size, error_count, warning_count, log_warning, log_error, reportitems, log_size, warning_log_size, error_log_size, log')
+           Munkireportinfo_model::selectRaw('version, packageversion, packagefilename, installdate, python_version, python_path, baseurl, passphrase, start_time, end_time, upload_size, error_count, warning_count, log_warning, log_error, reportitems, log_size, warning_log_size, error_log_size, log')
                ->where('munkireportinfo.serial_number', $serial_number)
                ->filter()
                ->get()

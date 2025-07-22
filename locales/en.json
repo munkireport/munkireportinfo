@@ -28,5 +28,7 @@
     "error_log_size": "Error Log Size",
     "packageversion": "PKG Version",
     "installdate": "Install Date",
-    "packagefilename": "PGK Name"
+    "packagefilename": "PGK Name",
+    "python_version": "Python Version",
+    "python_path": "Python Path"
 }

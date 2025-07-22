@@ -23,3 +23,5 @@ Table Schema
 * packageversion - varchar(255) - Version of MunkiReport PKG installed on client
 * installdate - big int - When MunkiReport was installed on client
 * packagefilename - varchar(255) - Name of PKG used to install MunkiReport on client
+* python_version - varchar(255) - Version of Python 3 used by MunkiReport
+* python_path - varchar(255) - Path to Python 3 binary
