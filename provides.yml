@@ -13,6 +13,8 @@ reports:
 widgets:
     munkireportinfo_versions:
         view: munkireportinfo_versions_widget
+    munkireportinfo_pkg_versions:
+        view: munkireportinfo_pkg_versions_widget
     munkireportinfo:
         view: munkireportinfo_widget
     munkireportinfo_errors:

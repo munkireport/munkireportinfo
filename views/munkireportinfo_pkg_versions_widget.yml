@@ -1,0 +1,8 @@
+type: scrollbox
+widget_id: munkireportinfo-pkg-versions-widget
+api_url: /module/munkireportinfo/get_pkg_versions
+i18n_title: munkireportinfo.munkireport_pkg_versions
+icon: fa-dropbox
+listing_link: /show/listing/munkireportinfo/mrinfo
+search_key: packageversion
+badge: count

@@ -23,5 +23,10 @@ class Munkireportinfo_model extends Eloquent
       'log_size',
       'warning_log_size',
       'error_log_size',
+      'packageversion',
+      'installdate',
+      'packagefilename',
+      'python_version',
+      'python_path',
     ];
 }

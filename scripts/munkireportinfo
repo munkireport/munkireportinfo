@@ -7,94 +7,113 @@ import sys
 from datetime import datetime, timedelta, tzinfo
 import time
 
-sys.path.insert(0, '/usr/local/munki')
 sys.path.insert(0, '/usr/local/munkireport')
 
 from munkilib import FoundationPlist
 from Foundation import CFPreferencesCopyAppValue
 
-def get_log(result):
+def get_log(result, munkireport_log):
 
-    # Check if the log exists
-    if os.path.isfile('/Library/MunkiReport/Logs/MunkiReport.log'):
+    mr_log = []
+    mr_log_error = []
+    mr_log_warning = []
+    error_count = 0
+    warning_count = 0
+    current_run = 1
 
-        mr_log = []
-        mr_log_error = []
-        mr_log_warning = []
-        error_count = 0
-        warning_count = 0
-        current_run = 1
+    # Process log from bottom up to get last full run
+    for line in reversed(open(munkireport_log).readlines()):
+        if "## Starting MunkiReport run" in line and current_run == 1:
+            # Check if we've passed through the current run logs and change flag
+            current_run = 0
+        elif "## Starting MunkiReport run" in line and current_run == 0:
+            mr_log.append(line.strip())
+            time_line = line.replace("## Starting MunkiReport run", "").strip()
+            try:
+                result["start_time"] = munki_log_to_timestamp(time_line)
+            except:
+                result["start_time"] = int(time.time())
+            break
+        elif "## Finished run" in line and current_run == 0:
+            mr_log.append(line.strip())
+            time_line = line.replace("## Finished run", "").strip()
+            try:
+                result["end_time"] = munki_log_to_timestamp(time_line)
+            except:
+                result["end_time"] = int(time.time())
+        elif "Sending items (" in line and current_run == 0:
+            mr_log.append(line.strip())
+            upload_size = line.split("Sending items (")[-1].replace(")", "").strip()
+            result["upload_size"] = upload_size
+        elif current_run == 0:
 
-        # Process log from bottom up to get last full run
-        for line in reversed(open("/Library/MunkiReport/Logs/MunkiReport.log").readlines()):
-            if "## Starting MunkiReport run" in line and current_run == 1:
-                # Check if we've passed through the current run logs and change flag
-                current_run = 0
-            elif "## Starting MunkiReport run" in line and current_run == 0:
-                mr_log.append(line.strip())
-                time_line = line.replace("## Starting MunkiReport run", "").strip()
-                try:
-                    result["start_time"] = munki_log_to_timestamp(time_line)
-                except:
-                    result["start_time"] = int(time.time())
-                break
-            elif "## Finished run" in line and current_run == 0:
-                mr_log.append(line.strip())
-                time_line = line.replace("## Finished run", "").strip()
-                try:
-                    result["end_time"] = munki_log_to_timestamp(time_line)
-                except:
-                    result["end_time"] = int(time.time())
-            elif "Sending items (" in line and current_run == 0:
-                mr_log.append(line.strip())
-                upload_size = line.split("Sending items (")[-1].replace(")", "").strip()
-                result["upload_size"] = upload_size
-            elif current_run == 0:
+            # Log the errors and warnings
+            if " ERROR: " in line:
+                mr_log_error.append(line.split(" ERROR: ")[-1].strip())
+                error_count = error_count + 1
+            if " Error: " in line:
+                mr_log_error.append(line.split(" Error: ")[-1].strip())
+                error_count = error_count + 1
+            if "ERROR |" in line:
+                mr_log_error.append(line.split("ERROR |")[-1].strip())
+                error_count = error_count + 1
+            if "Server Error: " in line:
+                mr_log_error.append(line.split("Server Error: ")[-1].strip())
+                error_count = error_count + 1
+            if " WARNING: " in line:
+                mr_log_warning.append(line.split(" WARNING: ")[-1].strip())
+                warning_count = warning_count + 1
+            if " Warning: " in line:
+                mr_log_warning.append(line.split(" Warning: ")[-1].strip())
+                warning_count = warning_count + 1
 
-                # Log the errors and warnings
-                if " ERROR: " in line:
-                    mr_log_error.append(line.split(" ERROR: ")[-1].strip())
-                    error_count = error_count + 1
-                if " Error: " in line:
-                    mr_log_error.append(line.split(" Error: ")[-1].strip())
-                    error_count = error_count + 1
-                if "ERROR |" in line:
-                    mr_log_error.append(line.split("ERROR |")[-1].strip())
-                    error_count = error_count + 1
-                if "Server Error: " in line:
-                    mr_log_error.append(line.split("Server Error: ")[-1].strip())
-                    error_count = error_count + 1
-                if " WARNING: " in line:
-                    mr_log_warning.append(line.split(" WARNING: ")[-1].strip())
-                    warning_count = warning_count + 1
-                if " Warning: " in line:
-                    mr_log_warning.append(line.split(" Warning: ")[-1].strip())
-                    warning_count = warning_count + 1
+            mr_log.append(line.strip())
 
-                mr_log.append(line.strip())
+    # Reverse saved logs back to start->finish
+    mr_log.reverse()
+    result["warning_count"] = warning_count
+    result["error_count"] = error_count
+    result["log"] = "\n".join(mr_log)
+    result["log_error"] = "\n".join(mr_log_error)
+    result["log_warning"] = "\n".join(mr_log_warning)
 
-        # Reverse saved logs back to start->finish
-        mr_log.reverse()
-        result["warning_count"] = warning_count
-        result["error_count"] = error_count
-        result["log"] = "\n".join(mr_log)
-        result["log_error"] = "\n".join(mr_log_error)
-        result["log_warning"] = "\n".join(mr_log_warning)
+    # Get the main log file sizes
+    result["log_size"] = str(os.path.getsize("/Library/MunkiReport/Logs/MunkiReport.log"))
 
-        # Get log file sizes
-        result["log_size"] = str(os.path.getsize("/Library/MunkiReport/Logs/MunkiReport.log"))
+    # Check if the warning log exists
+    if os.path.isfile('/Library/MunkiReport/Logs/warnings.log'):
+        result["warning_log_size"] = str(os.path.getsize("/Library/MunkiReport/Logs/warnings.log"))
 
-        # Check if the warning log exists
-        if os.path.isfile('/Library/MunkiReport/Logs/warnings.log'):
-            result["warning_log_size"] = str(os.path.getsize("/Library/MunkiReport/Logs/warnings.log"))
+    # Check if the error log exists
+    if os.path.isfile('/Library/MunkiReport/Logs/errors.log'):
+        result["error_log_size"] = str(os.path.getsize("/Library/MunkiReport/Logs/errors.log"))
 
-        # Check if the error log exists
-        if os.path.isfile('/Library/MunkiReport/Logs/errors.log'):
-            result["error_log_size"] = str(os.path.getsize("/Library/MunkiReport/Logs/errors.log"))
+    return result
 
-        return result
+def get_receipt_info():
+    if os.path.isfile("/private/var/db/receipts/com.github.munkireport.plist"):
+
+        mr_receipt = FoundationPlist.readPlist("/private/var/db/receipts/com.github.munkireport.plist")
+
+        out = {'packageversion':'','installdate':'','packagefilename':''}
+
+        for receipt_entry in mr_receipt:
+            if receipt_entry == "PackageVersion":
+                out["packageversion"] = mr_receipt[receipt_entry]
+            elif receipt_entry == "InstallDate":
+                time_string = str(mr_receipt[receipt_entry]).strip()
+                date_str, tz = time_string[:-5], time_string[-5:]
+                dt_utc = datetime.strptime(date_str.strip(), "%Y-%m-%d %H:%M:%S")
+                dt = dt_utc.replace(tzinfo=FixedOffset(tz))
+                utc_naive = dt.replace(tzinfo=None) - dt.utcoffset()
+                out["installdate"] = int((utc_naive - datetime(1970, 1, 1)).total_seconds())
+            elif receipt_entry == "PackageFileName":
+                out["packagefilename"] = mr_receipt[receipt_entry]
     else:
-        return result
+        out = {}
+        
+    return out
+
     
 def munki_log_to_timestamp(time_string):
     time_string = time_string.strip()
@@ -143,10 +162,32 @@ def main():
     result['passphrase'] = get_pref_value('Passphrase', 'MunkiReport')
     result['reportitems'] = get_pref_value('ReportItems', 'MunkiReport')
     result['version'] = str(get_pref_value('Version', 'MunkiReport'))
-    
-    # Process the log
-    get_log(result)
+    result['python_version'] = str(sys.version)
 
+    if os.path.isfile("/usr/local/munkireport/munkireport-python3"):
+        result['python_path'] = str(os.readlink("/usr/local/munkireport/munkireport-python3"))
+    else:
+        result['python_path'] = "Unknown"
+
+    result = result | get_receipt_info()
+
+    # Check if the MunkiReport log exists
+    if os.path.isfile('/Library/MunkiReport/Logs/MunkiReport.log'):
+
+        with open('/Library/MunkiReport/Logs/MunkiReport.log') as mr_log:
+            # Check if we have a complete run log in the main log file
+            if "## Finished run" in mr_log.read():
+                # Process the log
+                get_log(result, '/Library/MunkiReport/Logs/MunkiReport.log')
+
+            elif os.path.isfile('/Library/MunkiReport/Logs/MunkiReport.log.0'):
+                # Process the previous log to get the last complete run
+                get_log(result, '/Library/MunkiReport/Logs/MunkiReport.log.0')
+
+    elif os.path.isfile('/Library/MunkiReport/Logs/MunkiReport.log.0'):
+        # Process the log
+        get_log(result, '/Library/MunkiReport/Logs/MunkiReport.log.0')
+    
     # Write munkireportinfo cache file
     cachedir = '%s/cache' % os.path.dirname(os.path.realpath(__file__))
     output_plist = os.path.join(cachedir, 'munkireportinfo.plist')

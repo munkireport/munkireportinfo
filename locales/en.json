@@ -5,8 +5,9 @@
     "reportitems": "Installed Modules",
     "reporttitle": "MunkiReport Report",
     "munkireport_versions": "MunkiReport Versions",
+    "munkireport_pkg_versions": "MunkiReport PKG Versions",
     "status": "MunkiReport Status",
-    "version": "Version",
+    "version": "Server Version",
     "http": "HTTP",
     "https": "HTTPS",
     "local": "Local",
@@ -24,5 +25,10 @@
     "upload_size": "Upload Size",
     "log_size": "Log Size",
     "warning_log_size": "Warning Log Size",
-    "error_log_size": "Error Log Size"
+    "error_log_size": "Error Log Size",
+    "packageversion": "PKG Version",
+    "installdate": "Install Date",
+    "packagefilename": "PGK Name",
+    "python_version": "Python Version",
+    "python_path": "Python Path"
 }

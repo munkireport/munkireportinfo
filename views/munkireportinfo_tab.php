@@ -30,7 +30,7 @@ $(document).on('appReady', function(){
                             rows = rows
 
                         // Format date
-                        } else if((prop == "start_time" || prop == "end_time") && d[prop] > 0){
+                        } else if((prop == "start_time" || prop == "end_time" || prop == "installdate") && d[prop] > 0){
                             var date = new Date(d[prop] * 1000);
                             rows = rows + '<tr><th>'+i18n.t('munkireportinfo.'+prop)+'</th><td><span title="'+moment(date).fromNow()+'">'+moment(date).format('llll')+'</span></td></tr>';
 
